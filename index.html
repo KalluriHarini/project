@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>TechDeals - Smart Price Comparison</title>
+
+<style>
+
+/* BODY */
+body{
+    font-family: 'Segoe UI', sans-serif;
+    margin:0;
+    background:linear-gradient(135deg,#000000,#1a1a2e);
+    color:white;
+}
+
+/* HEADER (Glass + Modern) */
+.header{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:15px;
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+    position:relative;
+    box-shadow:0 4px 15px rgba(0,0,0,0.3);
+}
+
+/* LOGO */
+.logo{
+    width:45px;
+    height:45px;
+    object-fit:cover;
+    border-radius:50%;
+    position:absolute;
+    left:20px;
+    border:2px solid white;
+    box-shadow:0 0 10px rgba(255,255,255,0.3);
+}
+
+/* TITLE */
+.title-text{
+    font-size:28px;
+    font-weight:bold;
+    letter-spacing:1px;
+}
+
+/* SEARCH */
+.search-section{
+    margin-top:40px;
+    text-align:center;
+}
+
+input{
+    width:320px;
+    padding:12px;
+    border-radius:30px;
+    border:none;
+    outline:none;
+    background:white;
+    color:black;
+    font-size:14px;
+}
+
+button{
+    padding:12px 18px;
+    border:none;
+    border-radius:30px;
+    background:#00c6ff;
+    color:white;
+    cursor:pointer;
+    margin-left:10px;
+    font-weight:bold;
+    transition:0.3s;
+}
+
+button:hover{
+    background:#0072ff;
+    transform:scale(1.05);
+}
+
+/* CATEGORIES */
+.categories{
+    margin-top:60px;
+    display:flex;
+    justify-content:center;
+    gap:30px;
+    flex-wrap:wrap;
+}
+
+/* CARD (COMBINED STYLE) */
+.box{
+    background:#ffffff;
+    color:#111;
+    width:200px;
+    padding:20px;
+    border-radius:18px;
+    text-align:center;
+    cursor:pointer;
+    transition:0.3s;
+    box-shadow:0 8px 20px rgba(0,0,0,0.3);
+}
+
+.box:hover{
+    transform: translateY(-10px) scale(1.07);
+    box-shadow:0 15px 30px rgba(0,0,0,0.5);
+}
+
+/* IMAGE */
+.box img{
+    width:100%;
+    height:140px;
+    object-fit:contain;
+    margin-bottom:10px;
+}
+
+/* TEXT */
+.box h3{
+    margin:0;
+    font-size:18px;
+    color:#111;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div class="header">
+
+    <!-- LOGO -->
+    <img src="logo.jpeg"
+         class="logo"
+         onerror="this.src='https://cdn-icons-png.flaticon.com/512/1828/1828884.png'">
+
+    <!-- TITLE -->
+    <div class="title-text">TechDeals</div>
+
+</div>
+
+<!-- SEARCH -->
+<div class="search-section">
+    <input id="searchInput" placeholder="Search products like iPhone, Laptop...">
+    <button onclick="searchProduct()">Search</button>
+</div>
+
+<!-- CATEGORIES -->
+<div class="categories">
+
+<div class="box" onclick="openResults('mobile')">
+<img src="https://m.media-amazon.com/images/I/71ZDY57yTQL._SX679_.jpg">
+<h3>Mobiles</h3>
+</div>
+
+<div class="box" onclick="openResults('laptop')">
+<img src="https://m.media-amazon.com/images/I/71vFKBpKakL._SX679_.jpg">
+<h3>Laptops</h3>
+</div>
+
+<div class="box" onclick="openResults('headphone')">
+<img src="https://m.media-amazon.com/images/I/61CGHv6kmWL._SX679_.jpg">
+<h3>Headphones</h3>
+</div>
+
+<div class="box" onclick="openResults('smartwatch')">
+<img src="https://m.media-amazon.com/images/I/61y2VVWcGBL._SX679_.jpg">
+<h3>Watches</h3>
+</div>
+
+</div>
+
+<script>
+
+function openResults(cat){
+    localStorage.setItem("category", cat);
+    window.open("results.html", "_blank");
+}
+
+function searchProduct(){
+    let val = document.getElementById("searchInput").value;
+    if(val){
+        localStorage.setItem("category", val.toLowerCase());
+        window.open("results.html", "_blank");
+    }
+}
+
+</script>
+
+</body>
+</html>
