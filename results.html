@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Results</title>
+
+<style>
+body{
+    font-family: Arial;
+    background:#000;
+    color:white;
+    text-align:center;
+}
+
+#results{
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap:20px;
+    padding:20px;
+}
+
+.card{
+    background:white;
+    color:black;
+    padding:15px;
+    border-radius:10px;
+    text-align:left;
+}
+
+.card img{
+    width:100%;
+    height:180px;
+    object-fit:contain;
+}
+
+.link-btn{
+    display:inline-block;
+    margin-top:8px;
+    padding:6px 10px;
+    background:#4ca1af;
+    color:white;
+    border-radius:8px;
+    text-decoration:none;
+}
+
+.badge{
+    display:inline-block;
+    padding:4px 8px;
+    border-radius:6px;
+    font-size:12px;
+    font-weight:bold;
+    margin-left:8px;
+}
+
+.best{
+    background:gold;
+    color:black;
+}
+</style>
+</head>
+
+<body>
+
+<h2 id="title">Results</h2>
+<div id="results"></div>
+
+<script>
+
+let category = localStorage.getItem("category") || "mobile";
+
+window.onload = function(){
+    load();
+};
+
+async function load(){
+
+    let box = document.getElementById("results");
+
+    document.getElementById("title").innerText =
+        "Results for " + category;
+
+    // 🔥 Loading message
+    box.innerHTML = "<h3>Loading... please wait ⏳</h3>";
+
+    try{
+        // ✅ CONNECTED TO NEW BACKEND
+        const res = await fetch(`http://127.0.0.1:5000/search?q=${category}`);
+        const data = await res.json();
+
+        box.innerHTML = "";
+
+        if(data.length === 0){
+            box.innerHTML = "<h3>No products found</h3>";
+            return;
+        }
+
+        data.forEach(item => {
+
+            let fp = parseFloat((item["Flipkart Price"] || "0").replace(/[^0-9.]/g,"")) || 0;
+            let ap = parseFloat((item["Amazon Price"] || "0").replace(/[^0-9.]/g,"")) || 0;
+
+            let flipkartBest = fp > 0 && (ap === 0 || fp < ap);
+            let amazonBest = ap > 0 && (fp === 0 || ap < fp);
+
+            box.innerHTML += `
+                <div class="card">
+
+                    <img src="${item["Flipkart Image"]}" />
+
+                    <h3>${item.Product}</h3>
+
+                    <p><b> Rating ⭐:</b> ${item["Flipkart Rating"]}</p>
+
+                    <p>
+                        <b> Flipkart Price:</b> ${item["Flipkart Price"]}
+                        ${flipkartBest ? '<span class="badge best">BEST DEAL</span>' : ''}
+                    </p>
+
+                    <a class="link-btn" href="${item["Flipkart Link"]}" target="_blank">
+                        Open Flipkart
+                    </a>
+
+                    <p>
+                        <b> Amazon Price:</b> ${item["Amazon Price"]}
+                        ${amazonBest ? '<span class="badge best">BEST DEAL</span>' : ''}
+                    </p>
+
+                    <a class="link-btn" href="${item["Amazon Link"]}" target="_blank">
+                        Open Amazon
+                    </a>
+
+                </div>
+            `;
+        });
+
+    } catch(err){
+        box.innerHTML = "<h3>Server error ❌</h3>";
+        console.log(err);
+    }
+}
+
+</script>
+
+</body>
+</html>
